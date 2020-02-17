@@ -1,0 +1,22 @@
+{
+  "name": "meadowlark",
+  "version": "1.0.0",
+  "description": "Meadowlark",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thanhlt-1007/meadowlark.git"
+  },
+  "keywords": [
+    "Meadowlark"
+  ],
+  "author": "thanhlt-1007",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thanhlt-1007/meadowlark/issues"
+  },
+  "homepage": "https://github.com/thanhlt-1007/meadowlark#readme"
+}
