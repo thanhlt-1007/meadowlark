@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/thanhlt-1007/meadowlark/issues"
   },
-  "homepage": "https://github.com/thanhlt-1007/meadowlark#readme"
+  "homepage": "https://github.com/thanhlt-1007/meadowlark#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
