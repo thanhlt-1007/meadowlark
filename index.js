@@ -26,7 +26,16 @@ app.get('/', function(req, res) {
 
 // get /about
 app.get('/about', function(req, res) {
-  res.render('about', {forture: 'random forture'});
+  var fortunes = [
+    'Conquer your fears or they will conquer you.',
+    'Rivers need springs.',
+    'Do not fear what you don\'t know.',
+    'You will have a pleasant surprise.',
+    'Whenever possible, keep it simple.',
+  ];
+  var index = Math.floor(Math.random() * fortunes.length);
+  var forture = fortunes[index];
+  res.render('about', {forture: forture});
 });
 
 // custom 400 page
