@@ -15,6 +15,9 @@ var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+// set static assets (img, css, js) folder
+app.use(express.static(__dirname + '/public'));
+
 // have to set route before 400 and 500 page
 // get /
 app.get('/', function(req, res) {
@@ -23,7 +26,7 @@ app.get('/', function(req, res) {
 
 // get /about
 app.get('/about', function(req, res) {
-  res.render('about')
+  res.render('about');
 });
 
 // custom 400 page
