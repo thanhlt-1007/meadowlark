@@ -26,7 +26,7 @@ app.get('/', function(req, res) {
 
 // get /about
 app.get('/about', function(req, res) {
-  res.render('about');
+  res.render('about', {forture: 'random forture'});
 });
 
 // custom 400 page
