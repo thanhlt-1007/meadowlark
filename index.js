@@ -9,33 +9,32 @@ app.listen(app.get('port'), function() {
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl + C to terminate.');
 });
 
-// have to set route before 400 and 500 page
+// set view engine handlebar
+// set default layout views/layouts/main.handlebars
+var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
 
+// have to set route before 400 and 500 page
 // get /
 app.get('/', function(req, res) {
-  res.type('text/plain');
-  res.status(200);
-  res.send('Home page');
+  res.render('home');
 });
 
 // get /about
 app.get('/about', function(req, res) {
-  res.type('text/plain');
-  res.status(200);
-  res.send('About page');
+  res.render('about')
 });
 
 // custom 400 page
 app.use(function(req, res) {
-  res.type('text/plain');
   res.status(404);
-  res.send('400 - Not Found');
+  res.render('400');
 });
 
 // custom 500 page
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.type('text/plain');
   res.status(500);
-  res.send('500 - Server Error');
+  res.render('500');
 });
