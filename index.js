@@ -2,6 +2,9 @@ var express = require('express');
 
 var app = express();
 
+// require lib
+var fortune = require('./lib/fortune.js');
+
 // set port
 app.set('port', process.env.PORT || 3000);
 // listen port
@@ -26,16 +29,7 @@ app.get('/', function(req, res) {
 
 // get /about
 app.get('/about', function(req, res) {
-  var fortunes = [
-    'Conquer your fears or they will conquer you.',
-    'Rivers need springs.',
-    'Do not fear what you don\'t know.',
-    'You will have a pleasant surprise.',
-    'Whenever possible, keep it simple.',
-  ];
-  var index = Math.floor(Math.random() * fortunes.length);
-  var forture = fortunes[index];
-  res.render('about', {forture: forture});
+  res.render('about', {fortune: fortune.getFortune()});
 });
 
 // custom 400 page
