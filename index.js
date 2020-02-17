@@ -32,6 +32,16 @@ app.get('/about', function(req, res) {
   res.render('about', {fortune: fortune.getFortune()});
 });
 
+// get /headers
+app.get('/headers', function(req, res) {
+  var headersString = '';
+  var headers = req.headers;
+  for(var name in req.headers) {
+    headersString += name + ': ' + headers[name] + '\n';
+  }
+  res.render('headers', {headersString: headersString});
+});
+
 // custom 400 page
 app.use(function(req, res) {
   res.status(404);
