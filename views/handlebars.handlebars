@@ -1,0 +1,37 @@
+<h1>What is handle bars</h1>
+
+<p>{{firstName}} {{lastName}}</p>
+
+<p>{{person.firstName}} {{person.lastName}}</p>
+
+<p>{{person/firstName}} {{person/lastName}}</p>
+
+<p>{{hello}} {{people.[0].firstName}} {{people.[0].lastName}}</p>
+
+{{#each people}}
+  <p>{{../hello}} {{this.firstName}} {{this.lastName}}</p>
+{{/each}}
+
+<p>raw {{{specialChars}}}</p>
+
+<p>HTML escape {{specialChars}}</p>
+
+{{#each links}}
+  <a href="{{url}}">
+    {{#if test}}
+      {{title}}
+    {{^}}
+      Empty
+    {{/if}}
+  </a><br>
+{{/each}}
+
+{{#if author}}
+  <p>{{author.firstName}} {{author.lastName}}</p>
+{{/if}}
+
+{{#if anotherAuthor}}
+  <p>{{anotherAuthor.firstName}} {{anotherAuthor.lastName}}</p>
+{{else}}
+  <p>Unknow Author</p>
+{{/if}}

@@ -32,6 +32,41 @@ app.get('/about', function(req, res) {
   res.render('about', {fortune: fortune.getFortune()});
 });
 
+// get /handlebars
+app.get('/handlebars', function(req, res) {
+  res.render('handlebars', {
+    firstName: 'Le',
+    lastName: 'Tan Thanh',
+
+    person: {
+      firstName: 'Le',
+      lastName: 'Tan Thanh'
+    },
+
+    hello: 'Hello',
+    people: [{
+      firstName: 'Le',
+      lastName: 'Tan Thanh 01'
+    },{
+      firstName: 'Le',
+      lastName: 'Tan Thanh 02'
+    }],
+
+    specialChars: '& < > \" \' ` =',
+
+    links: [{
+      url: 'foo', test: true, title: 'bar'
+    },{
+      url: 'foo'
+    }],
+
+    author: {
+      firstName: 'Le',
+      lastName: 'Tan Thanh'
+    }
+  });
+});
+
 // get /headers
 app.get('/headers', function(req, res) {
   var headersString = '';
