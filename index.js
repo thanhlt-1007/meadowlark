@@ -67,6 +67,35 @@ app.get('/handlebars', function(req, res) {
   });
 });
 
+// get /handlebars/basic
+app.get('/handlebars/basic', function(req, res) {
+  res.render('handlebars/basic', {
+    name: 'Buttercup',
+    nameHTML: '<b>Buttercup</b>'
+  });
+});
+
+// get /handlebars/comments
+app.get('/handlebars/comments', function(req, res) {
+  res.render('handlebars/comments');
+});
+
+// get /handlebars/blocks
+app.get('/handlebars/blocks', function(req, res) {
+  res.render('handlebars/blocks', {
+    currency: {
+      name: 'United States dollars',
+      abbrev: 'USD'
+    },
+    tours: [
+      {name: 'Hood River', price: '$99.95'},
+      {name: 'Oregon Coast', price: '$159.95'}
+    ],
+    specialsUrl: '/january-specials',
+    currencies: ['USD', 'GBP', 'BTC']
+  });
+});
+
 // get /headers
 app.get('/headers', function(req, res) {
   var headersString = '';
