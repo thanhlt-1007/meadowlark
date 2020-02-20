@@ -4,6 +4,7 @@ var app = express();
 
 // require lib
 var fortune = require('./lib/fortune.js');
+var weather = require('./lib/weather.js');
 
 // set port
 app.set('port', process.env.PORT || 3000);
@@ -20,6 +21,13 @@ app.set('view engine', 'handlebars');
 
 // set static assets (img, css, js) folder
 app.use(express.static(__dirname + '/public'));
+
+// use middleware to inject data to res.locals.partials object
+app.use(function(req, res, next){
+	if(!res.locals.partials) res.locals.partials = {};
+ 	res.locals.partials.weatherContext = weather.getWeatherData();
+ 	next();
+});
 
 // have to set route before 400 and 500 page
 // get /
