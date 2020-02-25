@@ -1,10 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var formidable = require('formidable');
+var cookieParser = require('cookie-parser');
 
 // require lib
 var fortune = require('./lib/fortune.js');
 var weather = require('./lib/weather.js');
+var credentials = require('./lib/credentials.js');
 
 // create app
 var app = express();
@@ -32,6 +34,9 @@ var handlebars = require('express-handlebars').create({
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+// use middleware cookie-parser
+app.use(cookieParser(credentials.cookieSecret));
+
 // use middleware to parse URL-encoded body
 app.use(bodyParser());
 
@@ -48,6 +53,46 @@ app.use(function(req, res, next){
 // have to set route before 400 and 500 page
 // get /
 app.get('/', function(req, res) {
+  res.cookie('monster', 'Monster');
+  console.log('Cookie Monster: ' + req.cookies.monster);
+
+  // optional options
+
+  // domain:
+  // controls the domains the cookie is associated with
+  // this allow you to assign cookies to specific subdomains
+  // Note that you cannot set cookie for a different domain thanh the server is running on: it will simply do nothing
+
+  // path:
+  // controls the path this cookir is applies to.
+  // note that paths have an implicit wildcard after them
+  // if you use a path of / (default), it will apply to all pages on your site
+  // if you use a path of /foo, it will apply to the path /foo, /foo/bar, etc, ...
+
+  // maxAge
+  // specifies how long the client should keep the cookie before deleting it in miliseconds
+  // if you omit it, the cookie will be deleted when you close your browser
+  // You can also specify a date for expiration with the expires option
+  // but the syntax is frustrating, I recommend using maxAge
+
+  // secure
+  // specifies that this cookie will be sent only over a secure (HTTPS) connection
+ 
+  // httpOnly
+  // setting this to true specifies the cookie will be modified only be the server
+  // that is, client-side Javascript can not modify it
+  // this helps prevent XSS attack
+
+  // signed
+  // set to true to sign this cookie, making it available in res.signedCookies instead of res.cookies
+  // signed cookies that have been tampered with will be rejected by the server
+  // and the cookie valye will be reset to its original value
+
+  res.cookie('signedMonster', 'Signed Monster', {signed: true});
+  console.log('Signed Cookie Monster: ' + req.signedCookies.signedMonster);
+
+  res.clearCookie('monster');
+
   res.render('home');
 });
 
