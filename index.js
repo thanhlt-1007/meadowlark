@@ -1,10 +1,12 @@
 var express = require('express');
-
-var app = express();
+var bodyParser = require('body-parser');
 
 // require lib
 var fortune = require('./lib/fortune.js');
 var weather = require('./lib/weather.js');
+
+// create app
+var app = express();
 
 // set port
 app.set('port', process.env.PORT || 3000);
@@ -28,6 +30,9 @@ var handlebars = require('express-handlebars').create({
 });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
+
+// use middleware to parse URL-encoded body
+app.use(bodyParser());
 
 // use middleware to set static assets (img, css, js) folder
 app.use(express.static(__dirname + '/public'));
@@ -218,6 +223,11 @@ app.get('/request', function(req, res) {
   console.log(url);
 
   res.render('request');
+});
+
+// get /newsletter
+app.get('/newsletter', function(res, res) {
+  res.render('newsletter');
 });
 
 // custom 400 page
