@@ -227,7 +227,9 @@ app.get('/request', function(req, res) {
 
 // get /newsletter
 app.get('/newsletter', function(res, res) {
-  res.render('newsletter');
+  res.render('newsletter', {
+    csrf: 'CSRF token goes here'
+  });
 });
 
 // custom 400 page
