@@ -131,7 +131,7 @@ app.get('/', function(req, res) {
     intro: 'TEST',
     message: 'This is a test flash'
   }
-  res.render('home');
+  res.redirect(303, '/thank-you');
 });
 
 // get /about
