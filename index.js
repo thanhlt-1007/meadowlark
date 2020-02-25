@@ -232,6 +232,21 @@ app.get('/newsletter', function(res, res) {
   });
 });
 
+// post /process
+app.post('/process', function(req, res) {
+  console.log('\nPROCESSING ... POST ... /process\n');
+  console.log('Form (from querystring): ' + req.query.form);
+  console.log('CSRF token (from hidden form field): ' + req.body._csrf);
+  console.log('Name (from visible form field): ' + req.body.name);
+  console.log('Email (from visible form field): ' + req.body.email);
+  res.redirect(303, '/thank-you');
+});
+
+// get /thank-you
+app.get('/thank-you', function(res, res) {
+  res.render('thank-you');
+});
+
 // custom 400 page
 app.use(function(req, res) {
   res.status(404);
