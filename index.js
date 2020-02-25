@@ -15,11 +15,21 @@ app.listen(app.get('port'), function() {
 
 // set view engine handlebar
 // set default layout views/layouts/main.handlebars
-var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+var handlebars = require('express-handlebars').create({
+  defaultLayout: 'main',
+  helpers: {
+    section: function(name, options) {
+      if (!this._section) this._sections = {}
+
+      this._sections[name] = options.fn(this);
+      return null;
+    }
+  }
+});
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
-// set static assets (img, css, js) folder
+// use middleware to set static assets (img, css, js) folder
 app.use(express.static(__dirname + '/public'));
 
 // use middleware to inject data to res.locals.partials object
