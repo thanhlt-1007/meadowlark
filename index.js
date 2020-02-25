@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var formidable = require('formidable');
 
 // require lib
 var fortune = require('./lib/fortune.js');
@@ -235,6 +236,7 @@ app.get('/newsletter', function(res, res) {
 // post /process
 app.post('/process', function(req, res) {
   if(req.xhr || req.accepts('application/json') === 'application/json') {
+    // xhr is short for XML HTTP Request
     // submit form via ajax request
     res.send({success: true});
   } else {
@@ -252,6 +254,36 @@ app.post('/process', function(req, res) {
 // get /thank-you
 app.get('/thank-you', function(res, res) {
   res.render('thank-you');
+});
+
+// get /contest/vacation-photo
+app.get('/contest/vacation-photo', function(req, res) {
+  var now = new Date();
+  res.render('contest/vacation-photo', {
+    year: now.getFullYear(),
+    month: now.getMonth()
+  })
+});
+
+// post /contest/vacation-photo/:year/:month
+app.post('/contest/vacation-photo/:year/:month', function(req, res) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    if (err) return res.redirect(303, '/error');
+
+    console.log('received fields: ');
+    console.log(fields);
+
+    // size
+    // the path it was uploaded to
+    // (usually a random name in a temporary directory)
+    // original name of the file that the user uploaded
+    // (just the filename, not the whole pathm for security and privacy reasons)
+    console.log('files: ');
+    console.log(files);
+
+    res.redirect(303, '/thank-you');
+  });
 });
 
 // custom 400 page
