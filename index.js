@@ -234,12 +234,19 @@ app.get('/newsletter', function(res, res) {
 
 // post /process
 app.post('/process', function(req, res) {
-  console.log('\nPROCESSING ... POST ... /process\n');
-  console.log('Form (from querystring): ' + req.query.form);
-  console.log('CSRF token (from hidden form field): ' + req.body._csrf);
-  console.log('Name (from visible form field): ' + req.body.name);
-  console.log('Email (from visible form field): ' + req.body.email);
-  res.redirect(303, '/thank-you');
+  if(req.xhr || req.accepts('application/json') === 'application/json') {
+    // submit form via ajax request
+    res.send({success: true});
+  } else {
+    // submit form via HTML request
+    console.log('headers: ' + req.headers);
+    console.log('\nPROCESSING ... POST ... /process\n');
+    console.log('Form (from querystring): ' + req.query.form);
+    console.log('CSRF token (from hidden form field): ' + req.body._csrf);
+    console.log('Name (from visible form field): ' + req.body.name);
+    console.log('Email (from visible form field): ' + req.body.email);
+    res.redirect(303, '/thank-you');
+  }
 });
 
 // get /thank-you
