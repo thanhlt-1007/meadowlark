@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var formidable = require('formidable');
 var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
 
 // require lib
 var fortune = require('./lib/fortune.js');
@@ -37,6 +38,25 @@ app.set('view engine', 'handlebars');
 // use middleware cookie-parser
 app.use(cookieParser(credentials.cookieSecret));
 
+// use middleware express-session
+
+// accepts a configuration object with the following options
+
+// key
+// the name of the cookie that will store the unique session identifier
+// defaults to connect.sid
+
+// store
+// an instance of a session store
+// defaultes to an instance of MemoryStore
+// which is fine for our current purpose
+
+// cookie
+// cookie settings for the session cookie
+// regular cookie default apply
+
+app.use(expressSession());
+
 // use middleware to parse URL-encoded body
 app.use(bodyParser());
 
@@ -48,6 +68,13 @@ app.use(function(req, res, next){
 	if(!res.locals.partials) res.locals.partials = {};
  	res.locals.partials.weatherContext = weather.getWeatherData();
  	next();
+});
+
+// use middle ware to set flash to res.locals.flash and delete flash in req.session.flash
+app.use(function(req, res, next) {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
 });
 
 // have to set route before 400 and 500 page
@@ -93,6 +120,17 @@ app.get('/', function(req, res) {
 
   res.clearCookie('monster');
 
+  req.session.userName = 'Anonymous';
+  var colorScheme = req.session.colorScheme || 'dark';
+
+  req.session.userName = null;
+  delete req.session.colorScheme;
+
+  req.session.flash = {
+    type: 'success',
+    intro: 'TEST',
+    message: 'This is a test flash'
+  }
   res.render('home');
 });
 
