@@ -70,11 +70,102 @@ app.use(function(req, res, next){
  	next();
 });
 
-// use middle ware to set flash to res.locals.flash and delete flash in req.session.flash
+// use middleware to set flash to res.locals.flash and delete flash in req.session.flash
 app.use(function(req, res, next) {
   res.locals.flash = req.session.flash;
   delete req.session.flash;
   next();
+});
+
+// middleware
+
+// route handlers (app.get, app.post, etc often referred to collectively as app.VERB)
+// can be thought of as middleware that handle only a specific HTTP verb (GET, POST, etc)
+// conversely, middleware can be thought of as a route handler that handles all HTTP verbs
+
+// route handlers require a path as their first parameter
+// if you want that path to match any route, simply use /*
+// middle ware can also take a path as its first parameter
+// but it is optional (if it is omitted, it will match any path, as if you haf specific /*)
+
+// route handlers and middleware take a callback function that take two, there, or four parameters
+// technically, you could also have zero or one parameters, but there is nor sensible use for these forms
+// ir there are two or three parameters, the first two parameters are the request and response objects
+// and the thord parameters is the next function
+// if there are four parameters, it becomes and error-handling middleware
+// and the first parameter becomes and error object,
+// follow be the request response and next object
+
+// if you do not call next(), it's generally inadvisable to send a response to the client
+// if you do, middleware or route handlers futher down the pipeline will be executed
+// but any client responses they send will be ignored
+
+// middleware is excuted as ordered below
+// app.use(function(req, res, next) {
+//   console.log('\n...CALLING 000 middleware\n');
+//   console.log('Processing request for ' + req.url + '...');
+//   next();
+// });
+
+// app.use(function(req, res, next) {
+//   console.log('\n...CALLING 001 middleware\n');
+//   console.log('Terminating request');
+//   res.send('thanks for playing !');
+//   // note that we do not call next() here ... this terminates the request
+// });
+
+// app.use(function(req, res, next) {
+//   console.log('\n...CALLING 002 middleware\n');
+//   console.log('whoops, i\'ll never get called!');
+// });
+
+app.use(function(req, res, next){
+  console.log('\n\nALLWAYS');
+  next();
+});
+
+app.get('/a', function(req, res){
+  console.log('/a: route terminated');
+  res.send('a');
+});
+
+app.get('/a', function(req, res){
+  console.log('/a: never called');
+});
+
+app.get('/b', function(req, res, next){
+  console.log('/b: route not terminated');
+  next();
+});
+
+app.use(function(req, res, next){
+  console.log('SOMETIMES');
+  next();
+});
+
+app.get('/b', function(req, res, next){
+  console.log('/b (part 2): error thrown' );
+  throw new Error('b failed');
+});
+
+app.use('/b', function(err, req, res, next){
+  console.log('/b error detected and passed on');
+  next(err);
+});
+
+app.get('/c', function(err, req){
+  console.log('/c: error thrown');
+  throw new Error('c failed');
+});
+
+app.use('/c', function(err, req, res, next){
+  console.log('/c: error deteccted but not passed on');
+  next();
+});
+
+app.use(function(err, req, res, next){
+  console.log('unhandled error detected: ' + err.message);
+  res.send('500 - server error');
 });
 
 // have to set route before 400 and 500 page
